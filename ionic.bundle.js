@@ -7,9 +7,9 @@ Controllers
 ========================*/
 
 .controller('appCtrl', function($scope, $ionicSideMenuDelegate) {
-  setTimeout(function(){
+  setTimeout(function() {
     $ionicSideMenuDelegate.toggleLeft();
-  },600)
+  }, 600)
   var e = 'slide_effect,scale_effect,fade_effect,slide_up,wave,drop_in';
   $scope.slide = function(se) {
     $('.item').removeClass().addClass('item')
@@ -17,14 +17,14 @@ Controllers
     $('button').removeClass('active')
     $('.b_' + se).addClass('active');
     $ionicSideMenuDelegate.toggleLeft();
-    if($ionicSideMenuDelegate.isOpen() == true){
-      setTimeout(function(){
+    if ($ionicSideMenuDelegate.isOpen() == true) {
+      setTimeout(function() {
         $ionicSideMenuDelegate.toggleLeft();
-      },700)
+      }, 700)
     }
   };
 });
 
-$('button').click(function(){
+$('button').click(function() {
   $(this).addClass('active')
 });

@@ -1,29 +1,42 @@
-%html{'ng-app' => 'ionicApp'}
-  %head
-    %link{:href => 'http://code.ionicframework.com/1.0.0-beta.6/css/ionic.css', :rel => 'stylesheet'}
-    %script{:src => 'http://code.ionicframework.com/1.0.0-beta.6/js/ionic.bundle.js'}
-  %body.color{'ng-controller' => 'appCtrl'}
-    %ion-side-menus.color
-      %ion-side-menu{'width' => '200','side' => 'left'}
-        %ion-scroll{}
-          %div{'ng-init' => "names=['home','wifi','settings','options','search','cloud','stopwatch','apps','map','locate','compass','create','call']", 'overflow-scroll' => 'true', 'direction' => 'y'}
-            %ion-item.slide_effect{'ng-repeat' => 'x in names'} 
-              %i.icon{:class => 'ion-android-{{x}}'} 
+<html ng-app='ionicApp'>
+  <head>
+    <link href='http://code.ionicframework.com/1.0.0-beta.6/css/ionic.css' rel='stylesheet'>
+    <script src='http://code.ionicframework.com/1.0.0-beta.6/js/ionic.bundle.js'></script>
+  </head>
+  <body class='color' ng-controller='appCtrl'>
+    <ion-side-menus class='color'>
+      <ion-side-menu side='left' width='200'>
+        <ion-scroll>
+          <div direction='y' ng-init="names=['home','wifi','settings','options','search','cloud','stopwatch','apps','map','locate','compass','create','call']" overflow-scroll='true'>
+            <ion-item class='slide_effect' ng-repeat='x in names'>
+              <i class='icon ion-android-{{x}}'></i>
               <span>{{x}}</span><span class="sub">This is a sub title</span>
-      %ion-side-menu-content
-        %ion-scroll
-          %div.pad
-            %i.logo.icon.ion-ionic
-            %h1 Easy Ionic Side Menu Transitions
-            %h2 Just adding some css rules can really spice up your ionic side menus, go ahead, pull out the menu or click the buttons below for different effects...
-            %a.download{:href => 'http://www.jamiecoulter.co.uk/dev/easyIonic/easyIonicMenuTransitions.css',:target => '_blank'} 
+            </ion-item>
+          </div>
+        </ion-scroll>
+      </ion-side-menu>
+      <ion-side-menu-content>
+        <ion-scroll>
+          <div class='pad'>
+            <i class='logo icon ion-ionic'></i>
+            <h1>Easy Ionic Side Menu Transitions</h1>
+            <h2>Just adding some css rules can really spice up your ionic side menus, go ahead, pull out the menu or click the buttons below for different effects...</h2>
+            <a class='download' href='http://www.jamiecoulter.co.uk/dev/easyIonic/easyIonicMenuTransitions.css' target='_blank'>
               <i class="icon ion-code-download"></i> <span>Get it now</span>
-            %a.follow{:href => 'http://codepen.io/jcoulterdesign/',:target => '_blank'} 
+            </a>
+            <a class='follow' href='http://codepen.io/jcoulterdesign/' target='_blank'>
               <i class="icon ion-social-codepen-outline"></i> <span>Follow me on codepen</span>
-            %h3 Effect
-            %button.b_slide_effect.active{'ng-click' => 'slide("slide_effect")'} Slide Left
-            %button.b_scale_effect{'ng-click' => 'slide("scale_effect")'} Scale Up
-            %button.b_fade_effect{'ng-click' => 'slide("fade_effect")'} Simple Fade
-            %button.b_slide_up{'ng-click' => 'slide("slide_up")'} Slide Up
-            %button.b_wave{'ng-click' => 'slide("wave")'} Wave
-            %button.b_drop_in{'ng-click' => 'slide("drop_in")'} Drop In
+            </a>
+            <h3>Effect</h3>
+            <button class='b_slide_effect active' ng-click='slide("slide_effect")'>Slide Left</button>
+            <button class='b_scale_effect' ng-click='slide("scale_effect")'>Scale Up</button>
+            <button class='b_fade_effect' ng-click='slide("fade_effect")'>Simple Fade</button>
+            <button class='b_slide_up' ng-click='slide("slide_up")'>Slide Up</button>
+            <button class='b_wave' ng-click='slide("wave")'>Wave</button>
+            <button class='b_drop_in' ng-click='slide("drop_in")'>Drop In</button>
+          </div>
+        </ion-scroll>
+      </ion-side-menu-content>
+    </ion-side-menus>
+  </body>
+</html>
