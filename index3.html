@@ -1,0 +1,403 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<link rel="alternate" type="application/rss+xml" title="atom 1.0" href="/feed">
+
+
+
+<title>Android样式的开发:shape篇</title>
+
+
+    <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1"/>
+    <meta name="keywords" content="Keegan 小钢 开发 创业 Android 架构" />
+    <meta name="description" content="分享自己在创业路上的点点滴滴" />
+    <meta name="renderer" content="webkit"/><!--[if lt IE 9]><script type="text/javascript" src="html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]--><!--[if IE]><link href="/template/sass/ie.scss" type="text/css" rel="stylesheet"/>
+<![endif]--><link href="/service/static_3rd/staticfile/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" rel="stylesheet"/>
+<link href="/template/sass/normalize.scss" type="text/css" rel="stylesheet"/>
+<link href="/template/sass/screen.scss" type="text/css" rel="stylesheet"/>
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header id="header" class="cf">
+        <div class="logo"><a href="/">Keegan小钢</a>
+        </div>
+        <nav class="main-nav">
+          <ul class="menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/archive">Archive</a></li>
+            <!--if has('images')-->
+            <!--    li= a_with_selected('/album', 'Photos')-->
+          </ul>
+        </nav>
+      </header>
+      <div id="main" class="cf">
+
+
+<div class="primary">
+  <article class="post">
+    <header>
+      <h2><a href="/post/android/20150830" >Android样式的开发:shape篇</a>
+      </h2>
+      <div class="entry-meta"><span><i class="fa fa-calendar">&nbsp;</i>2015-08-30
+</span><span><i class="fa fa-tags">&nbsp;</i><a href="/tags/Android" class="tag">&nbsp;Android</a></span><span class="count"><i class="fa fa-book"></i>&nbsp;<!--fb:20458be310615f7d1adc29fa9bbafb0c:visits-->17885<!--/fb-->
+</span>
+      </div>
+    </header>
+    <div class="entry"><p>原创文章，转载请注明：转载自<a href="http://keeganlee.me/">Keegan小钢</a><br />并标明原文链接：<strong>http://keeganlee.me/post/android/20150830</strong><br />微信订阅号：<strong>keeganlee_me</strong><br />写于2015-08-30</p>
+
+<hr>
+
+<p><a href="http://keeganlee.me/post/android/20150830">Android样式的开发:shape篇</a><br /><a href="http://keeganlee.me/post/android/20150905">Android样式的开发:selector篇</a><br /><a href="http://keeganlee.me/post/android/20150909">Android样式的开发:layer-list篇</a><br /><a href="http://keeganlee.me/post/android/20150916">Android样式的开发:drawable汇总篇</a><br /><a href="http://keeganlee.me/post/android/20151003">Android样式的开发:View Animation篇</a><br /><a href="http://keeganlee.me/post/android/20151026">Android样式的开发:Property Animation篇</a><br /><a href="http://keeganlee.me/post/android/20151031">Android样式的开发:Style篇</a></p>
+
+<hr>
+
+<p>一个应用，应该保持一套统一的样式，包括Button、EditText、ProgressBar、Toast、Checkbox等各种控件的样式，还包括控件间隔、文字大小和颜色、阴影等等。web的样式用css来定义，而android的样式主要则是通过shape、selector、layer-list、level-list、style、theme等组合实现。我将用一系列文章，循序渐进地讲解样式的每个方面该如何实现。第一个要讲的就是shape，最基础的形状定义工具。</p>
+
+<p>一般用shape定义的xml文件存放在drawable目录下，若项目没有该目录则新建一个，而不要将它放到drawable-hdpi等目录中。</p>
+
+<p>使用shape可以自定义形状，可以定义下面四种类型的形状，通过android:shape属性指定：</p>
+
+<ul>
+<li><strong>rectangle</strong>: 矩形，默认的形状，可以画出直角矩形、圆角矩形、弧形等</li>
+<li><strong>oval</strong>: 椭圆形，用得比较多的是画正圆</li>
+<li><strong>line</strong>: 线形，可以画实线和虚线</li>
+<li><strong>ring</strong>: 环形，可以画环形进度条</li>
+</ul>
+
+<blockquote>
+<h1 id="toc_0">rectangle</h1>
+</blockquote>
+
+<p>rectangle是默认的形状，也是用得最多的形状，一些文字背景、按钮背景、控件或布局背景等，以下是一些简单的例子：</p>
+
+<p><img src="/android/_image/20150830/S50829-115225.jpg" alt=""></p>
+
+<p>实现上面的那些效果，都用到了以下这些特性：</p>
+
+<ul>
+<li><p><strong>solid</strong>: 设置形状填充的颜色，只有android:color一个属性</p>
+
+<ul>
+<li><em>android:color</em> 填充的颜色</li>
+</ul></li>
+<li><p><strong>padding</strong>: 设置内容与形状边界的内间距，可分别设置左右上下的距离</p>
+
+<ul>
+<li><em>android:left</em> 左内间距</li>
+<li><em>android:right</em> 右内间距</li>
+<li><em>android:top</em> 上内间距</li>
+<li><em>android:bottom</em> 下内间距</li>
+</ul></li>
+<li><p><strong>gradient</strong>: 设置形状的渐变颜色，可以是线性渐变、辐射渐变、扫描性渐变</p>
+
+<ul>
+<li><em>android:type</em> 渐变的类型
+
+<ul>
+<li><em>linear</em> 线性渐变，默认的渐变类型</li>
+<li><em>radial</em> 放射渐变，设置该项时，android:gradientRadius也必须设置</li>
+<li><em>sweep</em> 扫描性渐变</li>
+</ul></li>
+<li><em>android:startColor</em> 渐变开始的颜色</li>
+<li><em>android:endColor</em> 渐变结束的颜色</li>
+<li><em>android:centerColor</em> 渐变中间的颜色</li>
+<li><em>android:angle</em> 渐变的角度，线性渐变时才有效，必须是45的倍数，0表示从左到右，90表示从下到上</li>
+<li><em>android:centerX</em> 渐变中心的相对X坐标，放射渐变时才有效，在0.0到1.0之间，默认为0.5，表示在正中间</li>
+<li><em>android:centerY</em> 渐变中心的相对X坐标，放射渐变时才有效，在0.0到1.0之间，默认为0.5，表示在正中间</li>
+<li><em>android:gradientRadius</em> 渐变的半径，只有渐变类型为radial时才使用</li>
+<li><em>android:useLevel</em> 如果为true，则可在LevelListDrawable中使用</li>
+</ul></li>
+<li><p><strong>corners</strong>: 设置圆角，只适用于rectangle类型，可分别设置四个角不同半径的圆角，当设置的圆角半径很大时，比如200dp，就可变成弧形边了</p>
+
+<ul>
+<li><em>android:radius</em> 圆角半径，会被下面每个特定的圆角属性重写</li>
+<li><em>android:topLeftRadius</em> 左上角的半径</li>
+<li><em>android:topRightRadius</em> 右上角的半径</li>
+<li><em>android:bottomLeftRadius</em> 左下角的半径</li>
+<li><em>android:bottomRightRadius</em> 右下角的半径</li>
+</ul></li>
+<li><p><strong>stroke</strong>: 设置描边，可描成实线或虚线。</p>
+
+<ul>
+<li><em>android:color</em> 描边的颜色</li>
+<li><em>android:width</em> 描边的宽度</li>
+<li><em>android:dashWidth</em> 设置虚线时的横线长度</li>
+<li><em>android:dashGap</em> 设置虚线时的横线之间的距离</li>
+</ul></li>
+</ul>
+
+<p>接下来说下实际怎么使用。以下是加了虚线描边的矩形的代码，文件命名为bg_rectangle_with_stroke_dash.xml，放在drawable目录下：</p>
+<div class="codehilite"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="c">&lt;!-- android:shape指定形状类型，默认为rectangle --&gt;</span>
+<span class="nt">&lt;shape</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="na">android:shape=</span><span class="s">&quot;rectangle&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- solid指定形状的填充色，只有android:color一个属性 --&gt;</span>
+    <span class="nt">&lt;solid</span> <span class="na">android:color=</span><span class="s">&quot;#2F90BD&quot;</span> <span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- padding设置内容区域离边界的间距 --&gt;</span>
+    <span class="nt">&lt;padding</span>
+        <span class="na">android:bottom=</span><span class="s">&quot;12dp&quot;</span>
+        <span class="na">android:left=</span><span class="s">&quot;12dp&quot;</span>
+        <span class="na">android:right=</span><span class="s">&quot;12dp&quot;</span>
+        <span class="na">android:top=</span><span class="s">&quot;12dp&quot;</span> <span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- corners设置圆角，只适用于rectangle --&gt;</span>
+    <span class="nt">&lt;corners</span> <span class="na">android:radius=</span><span class="s">&quot;200dp&quot;</span> <span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- stroke设置描边 --&gt;</span>
+    <span class="nt">&lt;stroke</span>
+        <span class="na">android:width=</span><span class="s">&quot;2dp&quot;</span>
+        <span class="na">android:color=</span><span class="s">&quot;@android:color/darker_gray&quot;</span>
+        <span class="na">android:dashGap=</span><span class="s">&quot;4dp&quot;</span>
+        <span class="na">android:dashWidth=</span><span class="s">&quot;4dp&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/shape&gt;</span>
+</pre></div>
+
+<p>接着在要使用的view里引用就可以了，例如本例中用做TextView的background：</p>
+<div class="codehilite"><pre><span class="nt">&lt;TextView</span>
+    <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+    <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+    <span class="na">android:layout_margin=</span><span class="s">&quot;8dp&quot;</span>
+    <span class="na">android:text=</span><span class="s">&quot;加了虚线描边的矩形&quot;</span>
+    <span class="na">android:textSize=</span><span class="s">&quot;16sp&quot;</span>
+    <span class="na">android:textColor=</span><span class="s">&quot;@android:color/white&quot;</span>
+    <span class="na">android:background=</span><span class="s">&quot;@drawable/bg_rectangle_with_stroke_dash&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+
+<blockquote>
+<h1 id="toc_1">oval</h1>
+</blockquote>
+
+<p>oval用来画椭圆，而在实际应用中，更多是画正圆，比如消息提示，圆形按钮等，下图是一些例子：</p>
+
+<p><img src="/android/_image/20150830/097E4ABF-0D82-4FEA-BC76-F37AB37EB94C.jpeg" alt=""></p>
+
+<p>上面的效果图应用了solid、padding、stroke、gradient、size几个特性。size是用来设置形状大小的，如下：</p>
+
+<ul>
+<li><strong>size</strong>: 设置形状默认的大小，可设置宽度和高度
+
+<ul>
+<li><em>android:width</em> 宽度</li>
+<li><em>android:height</em> 高度</li>
+</ul></li>
+</ul>
+
+<p>数字0是默认的椭圆，只加了solid填充颜色，数字1则加了上下左右4dp的padding，后面的数字都是正圆，是通过设置size的同样大小的宽高实现的，也可以通过设置控件的宽高一致大小来实现。数字3加了描边，数字4是镂空描边，数字5是虚线描边，数字6用了radial渐变。注意，使用radial渐变时，必须指定渐变的半径，即android:gradientRadius属性。</p>
+
+<p>以下是渐变的代码实现，文件为bg_oval_with_gradient.xml：</p>
+<div class="codehilite"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="c">&lt;!-- android:shape指定形状类型，默认为rectangle --&gt;</span>
+<span class="nt">&lt;shape</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="na">android:shape=</span><span class="s">&quot;oval&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- padding设置内间距 --&gt;</span>
+    <span class="nt">&lt;padding</span>
+        <span class="na">android:bottom=</span><span class="s">&quot;4dp&quot;</span>
+        <span class="na">android:left=</span><span class="s">&quot;4dp&quot;</span>
+        <span class="na">android:right=</span><span class="s">&quot;4dp&quot;</span>
+        <span class="na">android:top=</span><span class="s">&quot;4dp&quot;</span> <span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- size设置形状的大小 --&gt;</span>
+    <span class="nt">&lt;size</span>
+        <span class="na">android:width=</span><span class="s">&quot;40dp&quot;</span>
+        <span class="na">android:height=</span><span class="s">&quot;40dp&quot;</span> <span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- gradient设置渐变 --&gt;</span>
+    <span class="nt">&lt;gradient</span>
+        <span class="na">android:endColor=</span><span class="s">&quot;#000000&quot;</span>
+        <span class="na">android:gradientRadius=</span><span class="s">&quot;40dp&quot;</span>
+        <span class="na">android:startColor=</span><span class="s">&quot;#FFFFFF&quot;</span>
+        <span class="na">android:type=</span><span class="s">&quot;radial&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/shape&gt;</span>
+</pre></div>
+
+<p>引用的代码：</p>
+<div class="codehilite"><pre><span class="nt">&lt;TextView</span>
+    <span class="na">android:layout_width=</span><span class="s">&quot;wrap_content&quot;</span>
+    <span class="na">android:layout_height=</span><span class="s">&quot;wrap_content&quot;</span>
+    <span class="na">android:gravity=</span><span class="s">&quot;center&quot;</span>
+    <span class="na">android:layout_margin=</span><span class="s">&quot;8dp&quot;</span>
+    <span class="na">android:text=</span><span class="s">&quot;6&quot;</span>
+    <span class="na">android:textSize=</span><span class="s">&quot;20sp&quot;</span>
+    <span class="na">android:textColor=</span><span class="s">&quot;@android:color/black&quot;</span>
+    <span class="na">android:background=</span><span class="s">&quot;@drawable/bg_oval_with_gradient&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+
+<blockquote>
+<h1 id="toc_2">line</h1>
+</blockquote>
+
+<p><img src="/android/_image/20150830/4C634096-CD97-4C5B-99B4-434CC0951631.jpeg" alt=""></p>
+
+<p>line主要用于画分割线，是通过stroke和size特性组合来实现的，先看虚线的代码：</p>
+<div class="codehilite"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;shape</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="na">android:shape=</span><span class="s">&quot;line&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 实际显示的线 --&gt;</span>
+    <span class="nt">&lt;stroke</span>
+        <span class="na">android:width=</span><span class="s">&quot;1dp&quot;</span>
+        <span class="na">android:color=</span><span class="s">&quot;#2F90BD&quot;</span>
+        <span class="na">android:dashGap=</span><span class="s">&quot;2dp&quot;</span>
+        <span class="na">android:dashWidth=</span><span class="s">&quot;4dp&quot;</span> <span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 形状的高度 --&gt;</span>
+    <span class="nt">&lt;size</span> <span class="na">android:height=</span><span class="s">&quot;4dp&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/shape&gt;</span>
+</pre></div>
+
+<p>画线时，有几点特性必须要知道的：</p>
+
+<ol>
+<li>只能画水平线，画不了竖线；</li>
+<li>线的高度是通过stroke的android:width属性设置的；</li>
+<li>size的android:height属性定义的是整个形状区域的高度；</li>
+<li>size的height必须大于stroke的width，否则，线无法显示；</li>
+<li>线在整个形状区域中是居中显示的；</li>
+<li>线左右两边会留有空白间距，线越粗，空白越大；</li>
+<li>引用虚线的view需要添加属性android:layerType，值设为&quot;software&quot;，否则显示不了虚线。</li>
+</ol>
+
+<blockquote>
+<h1 id="toc_3">ring</h1>
+</blockquote>
+
+<p>首先，shape根元素有些属性只适用于ring类型，先过目下这些属性吧：</p>
+
+<ul>
+<li><em>android:innerRadius</em>  内环的半径</li>
+<li><em>android:innerRadiusRatio</em>  浮点型，以环的宽度比率来表示内环的半径，默认为3，表示内环半径为环的宽度除以3，该值会被android:innerRadius覆盖</li>
+<li><em>android:thickness</em>  环的厚度</li>
+<li><em>android:thicknessRatio</em>  浮点型，以环的宽度比率来表示环的厚度，默认为9，表示环的厚度为环的宽度除以9，该值会被android:thickness覆盖</li>
+<li><em>android:useLevel</em>  一般为false，否则可能环形无法显示，只有作为LevelListDrawable使用时才设为true</li>
+</ul>
+
+<p><img src="/android/_image/20150830/C89E4D64-2A95-45C1-B4A9-4FC03EE18F4F.jpeg" alt=""></p>
+
+<p>第一个图只添加了solid；第二个图只添加了gradient，类型为sweep；第三个图只添加了stroke；第四个图添加了gradient和stroke两项特性。<br />以下为第四个图的代码：</p>
+<div class="codehilite"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;shape</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="na">android:innerRadiusRatio=</span><span class="s">&quot;3&quot;</span>
+    <span class="na">android:shape=</span><span class="s">&quot;ring&quot;</span>
+    <span class="na">android:thicknessRatio=</span><span class="s">&quot;9&quot;</span>
+    <span class="na">android:useLevel=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;gradient</span>
+        <span class="na">android:endColor=</span><span class="s">&quot;#2F90BD&quot;</span>
+        <span class="na">android:startColor=</span><span class="s">&quot;#FFFFFF&quot;</span>
+        <span class="na">android:type=</span><span class="s">&quot;sweep&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;stroke</span>
+        <span class="na">android:width=</span><span class="s">&quot;1dp&quot;</span>
+        <span class="na">android:color=</span><span class="s">&quot;@android:color/black&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/shape&gt;</span>
+</pre></div>
+
+<p>如果想让这个环形旋转起来，变成可用的进度条，则只要在shape外层包多一个rotate元素就可以了。</p>
+<div class="codehilite"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="nt">&lt;rotate</span> <span class="na">xmlns:android=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="na">android:fromDegrees=</span><span class="s">&quot;0&quot;</span>
+    <span class="na">android:pivotX=</span><span class="s">&quot;50%&quot;</span>
+    <span class="na">android:pivotY=</span><span class="s">&quot;50%&quot;</span>
+    <span class="na">android:toDegrees=</span><span class="s">&quot;1080.0&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;shape</span>
+        <span class="na">android:innerRadiusRatio=</span><span class="s">&quot;3&quot;</span>
+        <span class="na">android:shape=</span><span class="s">&quot;ring&quot;</span>
+        <span class="na">android:thicknessRatio=</span><span class="s">&quot;8&quot;</span>
+        <span class="na">android:useLevel=</span><span class="s">&quot;false&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;gradient</span>
+            <span class="na">android:endColor=</span><span class="s">&quot;#2F90BD&quot;</span>
+            <span class="na">android:startColor=</span><span class="s">&quot;#FFFFFF&quot;</span>
+            <span class="na">android:type=</span><span class="s">&quot;sweep&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/shape&gt;</span>
+<span class="nt">&lt;/rotate&gt;</span>
+</pre></div>
+
+<blockquote>
+<p>结尾</p>
+</blockquote>
+
+<p>shape篇就讲到这里了，代码也已经放上github，地址：<br /><a href="https://github.com/keeganlee/kstyle.git">https://github.com/keeganlee/kstyle.git</a></p>
+
+<hr>
+
+<p>扫描以下二维码即可关注订阅号。<br /><img src="/_image/qrcode_keegan.jpg" alt=""></p></div>
+<div id="fb_comments_container">
+  <div data-url="http://keeganlee.me/post/android/20150830"  class="ds-thread"></div>
+  <script type="text/javascript">var duoshuoQuery = {short_name:"keeganlee"};
+(function() { 
+    var ds = document.createElement('script'); ds.type = 'text/javascript';ds.async = true;
+    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+</div>
+
+  </article>
+</div>
+<div class="sider">
+  <aside>
+    <h3><i class="fa fa-magic"></i><span>&nbsp; Recent Articles</span>
+    </h3>
+    <ul class="recent_posts">
+
+
+      <li class="listing-item"><a href="/post/reading/20160722"  title="读《图解密码技术》(三):密钥、随机数和应用技术" >读《图解密码技术》(三):密钥、随机数和应用技术</a>
+      </li>
+      <li class="listing-item"><a href="/post/reading/20160705"  title="读《图解密码技术》(二):认证" >读《图解密码技术》(二):认证</a>
+      </li>
+      <li class="listing-item"><a href="/post/reading/20160629"  title="读《图解密码技术》(一):密码" >读《图解密码技术》(一):密码</a>
+      </li>
+      <li class="listing-item"><a href="/post/architecture/20160621"  title="小钢的架构思考:架构设计" >小钢的架构思考:架构设计</a>
+      </li>
+      <li class="listing-item"><a href="/post/architecture/20160509"  title="小钢的架构思考:架构规划" >小钢的架构思考:架构规划</a>
+      </li>
+      <li class="listing-item"><a href="/post/architecture/20160425"  title="小钢的架构思考:什么是架构" >小钢的架构思考:什么是架构</a>
+      </li>
+      <li class="listing-item"><a href="/post/20160415"  title="这几天我在跟一个iOS大咖撕逼" >这几天我在跟一个iOS大咖撕逼</a>
+      </li>
+      <li class="listing-item"><a href="/post/architecture/20160404"  title="App环境分离的实现:iOS篇" >App环境分离的实现:iOS篇</a>
+      </li>
+    </ul>
+  </aside>
+  <aside>
+    <h3><i class="fa fa-comments"></i><span>&nbsp; Recent Comments</span>
+    </h3>
+    <ul data-show-title="0" data-show-time="0" data-show-avatars="0" class="ds-recent-comments"></ul>
+  </aside>
+  <aside>
+    <h3><i class="fa fa-tags"></i><span>&nbsp;Tags</span>
+    </h3>
+    <div><a href="/tags/架构">架构 &nbsp;</a><a href="/tags/Android">Android &nbsp;</a><a href="/tags/杂谈">杂谈 &nbsp;</a><a href="/tags/读书笔记">读书笔记 &nbsp;</a><a href="/tags/创业">创业 &nbsp;</a><a href="/tags/BaaS">BaaS &nbsp;</a><a href="/tags/PUA">PUA &nbsp;</a><a href="/tags/iOS">iOS &nbsp;</a>
+    </div>
+  </aside>
+</div>
+
+
+
+      </div>
+      <footer id="footer">
+        <div class="footer-right"><a href="/template" title="Clone Template"><i class="fa fa-cloud-download"></i></a>
+        </div>
+        <div class="copyright">Powered by &nbsp;<a href="https://www.farbox.com" target="_blank">FarBox &nbsp;</a>Theme by <a href="http://motype.org">Deepure</a> . Thanks for
+<a href="http://fontawesome.io/">Fontawesome</a>&nbsp; &
+<a href="http://dropbox.com/">Dropbox</a>
+        </div>
+      </footer>
+      <!-- for duoshuo recent comments-->
+      <script type="text/javascript">var duoshuoQuery = {short_name:"keeganlee"};
+(function() { var ds = document.createElement('script'); ds.type = 'text/javascript';ds.async = true;
+ds.src = '//static.duoshuo.com/embed.js';ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+    </div>
+  
+<script src="/service/static_3rd/staticfile/ajax/libs/mathjax/2.6.0/MathJax.js?config=TeX-AMS_HTML-full.js" type= "text/javascript">
+       MathJax.Hub.Config({
+           tex2jax: {
+                inlineMath: [ ['$','$']]
+                },
+            extensions: ["jsMath2jax.js", 'tex2jax.js'],
+            messageStyle: "none"
+        });
+    </script>
+</body>
+</html>
