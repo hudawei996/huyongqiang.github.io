@@ -1,0 +1,1254 @@
+
+
+<!DOCTYPE HTML>
+<html>
+<head  lang="cn">
+	<title>CoordinatorLayout简述 - OPEN 开发经验库</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name=keywords content=",Android开发">
+	<meta name=description content="作为Android的控件, CoordinatorLayout已经加入最新的HelloWorld项目中, 也是Material风格的重要组件, 协调(Coordinate)其他组件, 实现联动. 那么让我们来看看这个动画效果怎么用吧? 
+
+">
+	<link rel="shortcut icon" href="/lib/favicon.ico">
+	<link rel=copyright href="http://www.open-open.com/">
+
+	<link href="//cdn.bootcss.com/highlight.js/9.2.0/styles/idea.min.css" rel="stylesheet">
+	<link href="//cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.min.css" rel="stylesheet">
+	
+	<link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/lib/css/jquery-confirm.css" rel="stylesheet">
+	<link href="http://www.open-open.com/resource/styles.css" rel="stylesheet">
+
+	<style type="text/css" media="screen, projection">
+		/*<![CDATA[*/
+		@import "/lib/css/common.css";
+		@import "/lib/css/main.css";
+		@import "/lib/css/jGrowl.css";
+		/*]]>*/
+		.articleIndex li.active a {
+			color: #0099ff;
+		}
+	</style>
+	<style type="text/css">
+		.topheader h1{font-size: 24px;margin: 0;}
+		.crumbs{padding-bottom: 5px;font-size: 11px;}.crumbs,.crumbs a,.meta{color: #bbb;}
+		#tag-list{margin-top: 10px;}
+		#tag-list a{background: #fff;padding: 2px 10px;text-decoration: none;}
+		#tag-list a:hover{background: #c5e2ff;color: #0099ff;}
+		.crumbs a:hover{color: #0099ff;}
+		#readercontainer{background: #fff;padding: 40px 89px;}
+
+		.post-nav ul{
+			margin: 0;
+		}
+		.post-nav>ul>li a{
+			padding-left: 10px;
+		}
+		.post-nav>ul>li>ul>li a{
+			padding-left: 30px;
+		}
+		.post-nav>ul>li>ul>li>ul>li a{
+			padding-left: 50px;
+		}
+		.post-nav ul li.active a{
+			border-left: 2px solid #0099ff;
+		}
+
+		.aside-fixed {
+			left: 50%;
+			margin-left: 310px;
+			position: fixed;
+			top: 65px;
+			width: 260px;
+		}
+		.bdsharebuttonbox {
+			background: #eee none repeat scroll 0 0;
+			margin-top: 10px;
+			padding: 10px;
+			width: 100%;
+		}
+
+	</style>
+
+	<script type="text/javascript">
+		if(window.location.toString().indexOf('pref=padindex') != -1){
+		}else{
+			if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){
+				if(window.location.href.indexOf("?mobile")<0){
+					try{
+						if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){
+							window.location.href="http://m.open-open.com/m/lib/view/1453021356261.html";
+						}else if(/iPad/i.test(navigator.userAgent)){
+							window.location.href="http://m.open-open.com/m/lib/view/1453021356261.html"
+						}else{
+							window.location.href="http://m.open-open.com/m/lib/view/1453021356261.html"
+						}
+					}catch(e){}
+				}
+			}
+		}
+	</script>
+
+
+	<script type="text/javascript">
+		var rooturl="/lib";
+		var wgDocKey='1453021356261';
+		var wgDocTitle='CoordinatorLayout简述';
+		var wgDocStatusFlag='';
+		var wgUserFolders=null;
+		var wgDownFrame=null;
+		var wgCostByUser=null;
+		var wgDocFavoriteByUser=false;
+		var wgDocScoreByUser=null;
+		var wgUserLogined=0;
+		var tb_pathToImage = "/lib/images/loadingAnimation.gif";
+
+
+	</script>
+
+
+
+
+</head>
+<body id=view>
+
+
+<style>
+	.global-tags{background: #333;color: #ababab;height: 30px;line-height: 30px;width: 100%;}
+	.global-tags .container{position: relative;}
+	.global-tags ul{ height: 30px; margin: 0; overflow: hidden;}
+	.global-tags a{color:#ababab;padding: 5px; }
+	.global-tags a:hover{color:#e0e0e0; }
+	.global-tags li { display: inline-block; padding: 0; }
+	.global-tags  .more { background-color: #333; height: 30px; position: absolute; right: 0; top: 0; width: 30px; }
+	.global-tags  .more:before { background-image: linear-gradient(90deg, rgba(0, 95, 60, 0), #333); background-size: 100% auto; content: ""; height: 100%; left: -20px; position: absolute; top: 0; width: 20px; }
+
+	/* menu */
+	.all-sort{z-index: 100;position: absolute;left: 15px;top: 30px;display: none;}
+	.all-sort-head{background: #ff3c00; color: #fff; margin-right: 20px; text-align: center; width: 160px;float: left;}
+	.all-sort-head a{color: #fff;}
+	.item-list .subitem{float:left;padding:20px;}
+	.all-sort-list{position:relative;width:160px;border:2px solid #393939;border-top:none;background:#393939;float: left;z-index: 100;}
+	.all-sort-list .item .parent{font-weight: 700;border: none;width: 120px;text-align: right;margin-right: 2px;}
+	.all-sort-list .item .parent i{font: 400 9px/14px consolas; height: 14px; margin-left: 10px; width: 4px;}
+	.all-sort-list .item.bo{border-top:none;}
+	.all-sort-list .item h3{height:40px;line-height:40px;font-size:14px;font-weight:normal;width:158px;overflow:hidden; color:#ffffff;margin: 0;}
+	.all-sort-list .item h3 a{color: #ffffff;}
+	.all-sort-list .item:hover h3,.all-sort-list .item:hover span,.all-sort-list .item:hover h3 a,.all-sort-list .item .active ,.all-sort-list .item .active a,.all-sort-list .item .active span{color:#E4393C;}
+	.all-sort-list .item span{padding:0px 5px;color:#ffffff;font-family:"\5B8B\4F53";}
+	.all-sort-list .item a{text-decoration:none;}
+	.all-sort-list .subitem a{ float: left;  margin:5px 20px 5px 0;border-left:1px solid #eee;line-height: 14px;height: 20px;}
+	.all-sort-list .item a:hover{color:#E4393C;}
+	.all-sort-list .item:hover h3,.all-sort-list .item .active{position:relative;z-index:13;background:#FFF;border-color:#DDD;border-width:1px 0px;border-style:solid;}
+	.all-sort-list .item-list{ display:none; position:absolute; width:705px; min-height:360px; _height:360px; background:#FFF; left:157px;  border:1px solid #DDD; top:0; z-index:10; }
+
+</style>
+
+
+<header class="site-header">
+	<div class="header-top ">
+		<div class="header-top-inner">
+			<div class="" style="margin: 0 30px;">
+				<div class="row">
+					<div class="header-top-left col-lg-6 col-md-6 col-sm-6 col-xs-12 v-grid">
+						<div class="header-talet">
+							<a  href="http://www.open-open.com/">首页</a> &nbsp;
+							<a class="" href="http://www.open-open.com/code/">代码</a> &nbsp;
+							<a class="" href="http://www.open-open.com/doc/">文档</a> &nbsp;
+							<a title='OPEN论坛频道' href="http://www.open-open.com/solution/">问答</a> &nbsp;
+							<a title="OPEN资讯" class="" href="http://www.open-open.com/news/">资讯</a> &nbsp;
+							<a title="OPEN经验库" class="active" href="http://www.open-open.com/lib/" >经验</a> &nbsp;
+							<a title="GitHub日报" class="" href="http://www.open-open.com/github/">GitHub日报</a>
+							&nbsp;|&nbsp;
+							<a  class="active" title=" 安卓开发专栏" target="_blank" href="http://www.open-open.com/lib/list/177">安卓开发专栏</a>
+							&nbsp;|&nbsp;
+							<a class="active" href="/lib/tag/开发者周刊"  target="_blank"  rel="tag">开发者周刊</a>
+						</div>
+					</div>
+					<div class="header-top-right col-lg-6 col-md-6 col-sm-6 col-xs-12 v-grid">
+						<div class="user-info pull-right" id="Personal">
+							
+								<a href="#" title="登录OPEN经验库" class="login">登录</a>&nbsp;&nbsp;
+								<a href="#" title="注册新的账号" class="register">注册</a>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<nav class="navbar ">
+		<div class="container">
+			<div class="navbar-header" style="margin-right: 30px;">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+						aria-expanded="false" aria-controls="navbar">
+					<span aria-hidden="true" class="glyphicon glyphicon-menu-hamburger"></span>
+					<span aria-hidden="true" class="glyphicon glyphicon-menu-up"></span>
+				</button>
+				<a class="top-logo" href="//www.open-open.com/lib"><span>www.open-open.com/lib</span></a>
+				<span style="font-size: 26px;color: #db6d4c">OPEN经验</span>
+				<span style="font-size: 12px;color: #b5b5b5"></span>
+			</div>
+
+			<div class="pull-right" style="padding: 20px;">
+				<button class="btn btn-info br40" id="upload" type="button">投稿</button>
+			</div>
+			<div id="search">
+				<form onsubmit="document.charset='utf-8';" accept-charset="utf-8" method="post" action="/lib/query" name="sf">
+					<input type="hidden" value="all" name="site">
+					<div class="input-group">
+						<input type="text" x-webkit-speech="" placeholder="经验搜索" class="form-control" name="q" id="kw">
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                      </span>
+
+					</div>
+				</form>
+
+				<!-- /input-group -->
+
+			</div>
+
+		</div>
+	</nav>
+	<div class="global-tags">
+		<div class="container">
+			<div class="all-sort-head"><a href="/lib/list/all">全部经验分类</a>&nbsp;<i aria-hidden="true" class="fa fa-toggle-down"></i></div><div class="all-sort"><div class="all-sort-list"><div data-submenu-id="submenu1" class="item bo"><h3><span>·</span><a href="/lib/list/1">软件开发</a></h3><div id="submenu1" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/405">VR</a><a href="/lib/list/2">Web框架</a><a href="/lib/list/3">GUI开发框架</a><a href="/lib/list/4">图表/报表制作</a><a href="/lib/list/5">搜索引擎</a><a href="/lib/list/6">模板引擎</a><a href="/lib/list/7">缓存组件</a><a href="/lib/list/8">Ajax框架</a><a href="/lib/list/9">XML操作类库</a><a href="/lib/list/10">HTML操作类库</a><a href="/lib/list/12">文件上传</a><a href="/lib/list/347">3D图形处理库</a><a href="/lib/list/14">图形/图像处理</a><a href="/lib/list/15">常用工具包</a><a href="/lib/list/16">JSON开发包</a><a href="/lib/list/353">OAuth开发包</a><a href="/lib/list/17">PDF工具包</a><a href="/lib/list/18">Flex开发</a><a href="/lib/list/19">Office文档处理</a><a href="/lib/list/20">日志处理</a><a href="/lib/list/21">网络工具包</a><a href="/lib/list/22">多媒体处理</a><a href="/lib/list/23">WEB服务/RPC/SOA</a><a href="/lib/list/24">RSS/ATOM相关</a><a href="/lib/list/25">持久层框架</a><a href="/lib/list/26">作业调度框架</a><a href="/lib/list/27">工作流引擎</a><a href="/lib/list/28">业务规则引擎</a><a href="/lib/list/29">面向方面AOP/IoC</a><a href="/lib/list/30">JEE框架</a><a href="/lib/list/31">安全相关</a><a href="/lib/list/32">OpenID/单点登录SSO</a><a href="/lib/list/34">条形码/二维码开发包</a><a href="/lib/list/35">验证码(Captcha)</a><a href="/lib/list/96">网络爬虫</a><a href="/lib/list/214">OSGi</a><a                            href="/lib/list/237">网络技术</a><a href="/lib/list/324">Google相关API</a><a href="/lib/list/328">Swing开发包</a><a href="/lib/list/332">HTML编辑器</a><a href="/lib/list/337" style="color:#FF3C00">JavaScript开发工具包</a><a href="/lib/list/352">TTS/语音合成和处理</a><a href="/lib/list/367">游戏开发</a><a href="/lib/list/370">加密/解密软件包</a><a href="/lib/list/374">源代码语法着色</a><a href="/lib/list/376">WebSocket 开发</a><a href="/lib/list/381">MathML显示与编辑</a><a href="/lib/list/383">计算机视觉库/人脸识别</a><a href="/lib/list/385">XML-RPC 开发</a><a href="/lib/list/386">Markdown处理库</a><a href="/lib/list/387">神经网络</a><a href="/lib/list/389">多媒体播放器</a><a href="/lib/list/391">推荐引擎</a><a href="/lib/list/394">机器学习</a><a href="/lib/list/401">算法</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu2" class="item "><h3><span>·</span><a href="/lib/list/36">开发语言与工具</a></h3><div id="submenu2" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/406">R语言</a><a href="/lib/list/37" style="color:#FF3C00">Java开发</a><a href="/lib/list/38">.NET开发</a><a href="/lib/list/39">PHP开发</a><a href="/lib/list/40">C/C++开发</a><a href="/lib/list/42">Ruby开发</a><a href="/lib/list/43">Python开发</a><a href="/lib/list/148">ActionScript开发</a><a href="/lib/list/145" style="color:#FF3C00">JavaScript开发</a><a href="/lib/list/44">Perl开发</a><a href="/lib/list/263">Delphi开发</a><a href="/lib/list/243">Erlang开发</a><a href="/lib/list/211">Google Go/Golang开发</a><a href="/lib/list/201">Scala开发</a><a href="/lib/list/240">Lua开发</a><a href="/lib/list/392">Apple Swift开发</a><a href="/lib/list/301">Objective-C开发</a><a href="/lib/list/45">BUG跟踪管理</a><a href="/lib/list/294">Lisp开发</a><a href="/lib/list/46">项目构建</a><a href="/lib/list/41">移动开发</a><a href="/lib/list/47">单元测试</a><a href="/lib/list/48">测试工具</a><a href="/lib/list/49">性能测试和优化</a><a href="/lib/list/50">程序调试</a><a href="/lib/list/51">代码混淆和加密</a><a href="/lib/list/52">UML/模型工具</a><a href="/lib/list/53">安装制作</a><a href="/lib/list/54">代码分析/审查/优化</a><a href="/lib/list/55">前端技术</a><a href="/lib/list/179">Eclipse开发工具</a><a href="/lib/list/205">IntelliJ IDEA</a><a href="/lib/list/281">NetBeans</a><a href="/lib/list/349">程序文档工具</a><a href="/lib/list/361">语法/词法分析器</a><a href="/lib/list/362">脚本/动态语言</a><a href="/lib/list/364">持续集成系统</a><a href="/lib/list/375">Web开发工具</a><a href="/lib/list/388">Node.js 开发</a><a href="/lib/list/395">中文分词</a><a href="/lib/list/399" style="color:#FF3C00">Android Studio开发工具</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu3" class="item "><h3><span>·</span><a href="/lib/list/57">网站系统</a></h3><div id="submenu3" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/58">论坛系统BBS</a><a href="/lib/list/59">建站系统CMS</a><a href="/lib/list/60">电子商务/商城</a><a href="/lib/list/61">SNS社交网络/交友平台</a><a href="/lib/list/62">百科系统Wiki</a><a href="/lib/list/63">门户平台Portal</a><a href="/lib/list/64">网络会议/视频会议</a><a href="/lib/list/65">相册/照片/多媒体系统</a><a href="/lib/list/66">微博工具/系统</a><a href="/lib/list/363">博客系统</a><a href="/lib/list/379">开源问答系统</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu4" class="item "><h3><span>·</span><a href="/lib/list/67">企业应用</a></h3><div id="submenu4" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/68">ERP/CRM</a><a href="/lib/list/69">OA办公/协作平台</a><a href="/lib/list/70">WebMail系统</a><a href="/lib/list/71">地理信息系统GIS</a><a href="/lib/list/72">数据挖掘</a><a href="/lib/list/73">文档管理</a><a href="/lib/list/74">项目/任务管理</a><a href="/lib/list/333">教学科研相关</a><a href="/lib/list/357">开源SIP项目</a><a href="/lib/list/368">计算机辅助设计CAD/CAM</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu5" class="item "><h3><span>·</span><a href="/lib/list/75">服务器软件</a></h3><div id="submenu5" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/76">应用服务器</a><a href="/lib/list/77">Web服务器</a><a href="/lib/list/78">FTP服务器</a><a href="/lib/list/79">邮件服务器</a><a href="/lib/list/80">缓存服务器</a><a href="/lib/list/81">版本控制系统</a><a href="/lib/list/82">路由器/防火墙</a><a href="/lib/list/83">电话/通讯/IM聊天</a><a href="/lib/list/84">集群/负载均衡</a><a href="/lib/list/85">流媒体服务器</a><a href="/lib/list/86">消息系统</a><a href="/lib/list/220">分布式/云计算/大数据</a><a href="/lib/list/298">企业服务总线ESB</a><a href="/lib/list/321">建站服务器套件</a><a href="/lib/list/348">虚拟化</a><a href="/lib/list/355">目录服务LDAP</a><a href="/lib/list/393">容器系统</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu6" class="item "><h3><span>·</span><a href="/lib/list/87">插件和扩展</a></h3><div id="submenu6" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/88">Eclipse插件</a><a href="/lib/list/89">jQuery插件</a><a href="/lib/list/331">Node.js扩展</a><a href="/lib/list/338">jQuery分页插件</a><a href="/lib/list/346">Prototype扩展</a><a href="/lib/list/356">Chrome插件/扩展</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu7" class="item "><h3><span>·</span><a href="/lib/list/90">数据库相关</a></h3><div id="submenu7" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/91">数据库服务器</a><a href="/lib/list/92">数据库管理工具</a><a href="/lib/list/93">数据库驱动程序</a><a href="/lib/list/94">数据库建模</a><a href="/lib/list/122">数据库连接池</a><a href="/lib/list/154">SQL</a><a href="/lib/list/307">NoSQL数据库</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu8" class="item "><h3><span>·</span><a href="/lib/list/155">操作系统</a></h3><div id="submenu8" class="item-list clearfix"><div class=" subitem"><a href="/lib/list/156">Linux</a><a href="/lib/list/182">CentOS</a><a href="/lib/list/183">Ubuntu</a><a href="/lib/list/224">UNIX</a><a href="/lib/list/251">Fedora</a><a href="/lib/list/274">FreeBSD</a><a href="/lib/list/310">Solaris</a><a href="/lib/list/311">openSUSE</a><a href="/lib/list/312">Debian</a><a href="/lib/list/313">OpenBSD</a></div><div class="cat-right"></div></div></div><div data-submenu-id="submenu9" class="item "><h3><span>·</span>其他分类</h3><div id="submenu9" class="item-list clearfix"><div class=" subitem"><p class="clearfix"><a href="/lib/list/159" class="parent">软件开发管理<i>></i></a><a href="/lib/list/174">敏捷开发</a><a href="/lib/list/178">项目管理</a><a href="/lib/list/196">软件架构</a><a href="/lib/list/296">软件测试</a></p><p class="clearfix"><a href="/lib/list/319" class="parent">管理和监控<i>></i></a><a href="/lib/list/320">系统监控</a><a href="/lib/list/360">日志分析和统计</a><a href="/lib/list/366">备份工具</a></p><p class="clearfix"><a href="/lib/list/322" class="parent">应用工具<i>></i></a><a href="/lib/list/323">磁盘/光驱工具</a><a href="/lib/list/359">文档/文本编辑</a><a href="/lib/list/384">终端/远程登录</a></p><p class="clearfix"><a href="/lib/list/329" class="parent">游戏相关<i>></i></a><a href="/lib/list/330">网页游戏</a></p></div><div class="cat-right"></div></div></div></div></div>
+			<ul class="nav__list">
+				<li class="nav__item " >
+
+				</li>
+				<li class="nav__item"><i class="fa fa-tags"></i></li>
+
+				<li class="nav__item"><a href="/lib/tag/Android"  rel="tag">Android</a></li>
+				<li class="nav__item"><a href="/lib/tag/IOS"  rel="tag">IOS</a></li>
+				<li class="nav__item"><a href="/lib/tag/JavaScript"  rel="tag">JavaScript</a></li>
+				<li class="nav__item"><a href="/lib/tag/HTML5"  rel="tag">HTML5</a></li>
+				<li class="nav__item"><a href="/lib/tag/CSS"  rel="tag">CSS</a></li>
+				<li class="nav__item"><a href="/lib/tag/jQuery"  rel="tag">jQuery</a></li>
+				<li class="nav__item"><a href="/lib/tag/Python"  rel="tag">Python</a></li>
+				<li class="nav__item"><a href="/lib/tag/PHP"  rel="tag">PHP</a></li>
+				<li class="nav__item"><a href="/lib/tag/NodeJS"  rel="tag">NodeJS</a></li>
+				<li class="nav__item"><a href="/lib/tag/Java"  rel="tag">Java</a></li>
+				<li class="nav__item"><a href="/lib/tag/Spring"  rel="tag">Spring</a></li>
+				<li class="nav__item"><a href="/lib/tag/MySQL"  rel="tag">MySQL</a></li>
+				<li class="nav__item"><a href="/lib/tag/MongoDB"  rel="tag">MongoDB</a></li>
+				<li class="nav__item"><a href="/lib/tag/Redis"  rel="tag">Redis</a></li>
+				<li class="nav__item"><a href="/lib/tag/NOSQL"  rel="tag">NOSQL</a></li>
+				<li class="nav__item"><a href="/lib/tag/Vim"  rel="tag">Vim</a></li>
+				<li class="nav__item"><a href="/lib/tag/C++"  rel="tag">C++</a></li>
+				<li class="nav__item"><a href="/lib/tag/C#"  rel="tag">C#</a></li>
+				<li class="nav__item"><a href="/lib/tag/JSON"  rel="tag">JSON</a></li>
+				<li class="nav__item"><a href="/lib/tag/Ruby"  rel="tag">Ruby</a></li>
+				<li class="nav__item"><a href="/lib/tag/Linux"  rel="tag">Linux</a></li>
+				<li class="nav__item"><a href="/lib/tag/Nginx"  rel="tag">Nginx</a></li>
+				<li class="nav__item"><a href="/lib/tag/Docker"  rel="tag">Docker</a></li>
+				<li class="more"></li>
+
+			</ul>
+
+		</div>
+	</div>
+</header>
+
+
+
+<div class="topheader" style="background: #eee;padding: 10px 0 30px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9">
+				<div class="crumbs">
+					<a href="/lib/list/all">所有分类</a>
+					
+						&nbsp;&gt;&nbsp;
+						<a href="/lib/list/36">开发语言与工具</a>
+					
+						&nbsp;&gt;&nbsp;
+						<a href="/lib/list/41">移动开发</a>
+					
+						&nbsp;&gt;&nbsp;
+						<a href="/lib/list/177">Android开发</a>
+					
+				</div>
+				<h1 id="articleTitle" >CoordinatorLayout简述</h1>
+				<div class="meta" style="margin-top: 10px;">
+					<span id="tag-list">
+					
+						<a href="/lib/tag/"></a>
+					
+					</span>&nbsp;
+
+					<span class=item>2016-01-17 17:06:53 发布</span>
+				</div>
+
+
+			</div>
+			<div  class="col-md-3">
+				<table>
+					<tbody>
+					<tr>
+						<td><strong>您的评价</strong>:</td>
+						<td>
+							<div id=rate class=rate-container><span id=star1 class=star-big-off title=很差>&nbsp;</span><span id=star2 class=star-big-off title=较差>&nbsp;</span><span id=star3 class=star-big-off title=还行>&nbsp;</span><span
+									id=star4 class=star-big-off title=不错>&nbsp;</span><span id=star5 class=star-big-off title=力荐>&nbsp;</span></div>
+						</td>
+						<td width=30>
+							<span id=score-num>0.0</span>
+						</td>
+						<td width=30>
+							<div id=rate-tip></div>
+						</td>
+
+					</tr>
+					</tbody>
+				</table>
+				<div id="favorite-container"><a id="favorite" href="javascript:void(0)" class="btn btn-default">收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;
+					<span class=item>2收藏</span>
+					<div id=favorite-box>
+						<table>
+							<tbody>
+							<tr>
+								<td width=70 align=right>文件夹</td>
+								<td><select id=fav_folderlist name=folder>
+									<option selected value=0>请选择...</option>
+									<option id=newfolder-sp disabled value="">-------------</option>
+									<option value=-1>新增文件夹...</option>
+								</select></td>
+							</tr>
+							<tr style="display: none" id=newfolder-input>
+								<td align=right>新增文件夹</td>
+								<td><input id=fav_newfolder maxlength=50 type=text name=newfolder></td>
+							</tr>
+							<tr>
+								<td align=right>标签</td>
+								<td><input id=fav_tags maxlength=135 size=20 type=text name=tags></td>
+							</tr>
+							<tr>
+								<td></td>
+								<td colspan=2>(多个标签用逗号分隔)</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div class="container">
+<div class="row">
+
+		<div id="readercontainer"  class="col-md-9">
+				<article>
+					<div class="markdown_views">
+<p>作为Android的控件, CoordinatorLayout已经加入最新的HelloWorld项目中, 也是Material风格的重要组件, 协调(Coordinate)其他组件, 实现联动. 那么让我们来看看这个动画效果怎么用吧? </p>
+<h3 id="1-准备">1. 准备</h3>
+<p>首先新建HelloWorld项目.</p>
+<p>在项目的build.gradle文件中, 引入头像控件库和CardView库, 在本例中会使用.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    compile 'de.hdodenhof:circleimageview:1.3.0'
+    compile 'com.android.support:cardview-v7:23.1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'</pre> <h3 id="2-页面">2. 页面</h3>
+<p>在<code>activity_main.xml</code>中, 保留CoordinatorLayout和AppBarLayout, 重新编写页面.</p>
+<blockquote>
+<p><code>android:fitsSystemWindows="true"</code> 这句也需要去掉, 本例需要保留最上面的状态栏(status bar), 这个属性会导致重叠, 默认false.</p>
+</blockquote>
+<p>activity_main.xml代码</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">&lt;android.support.design.widget.CoordinatorLayout  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" android:fitsSystemWindows="true" tools:context=".MainActivity"&gt;
+
+    &lt;android.support.design.widget.AppBarLayout  android:layout_width="match_parent" android:layout_height="wrap_content" android:theme="@style/AppTheme.AppBarOverlay"&gt;
+
+    &lt;/android.support.design.widget.AppBarLayout&gt;
+
+&lt;/android.support.design.widget.CoordinatorLayout&gt;</pre> <p>修改主题颜色, 粉色符合风格</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    &lt;color name="colorPrimary"&gt;#FFCCCC&lt;/color&gt;
+    &lt;color name="colorPrimaryDark"&gt;#FF00FF&lt;/color&gt;</pre> <p>在AppBarLayout中, 添加CollapsingToolbarLayout控件, CollapsingToolbar会滚动消失, 被ToolBar替换, 实现滚动动画.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">        &lt;android.support.design.widget.CollapsingToolbarLayout  android:layout_width="match_parent" android:layout_height="450dp" app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"&gt;
+
+        &lt;/android.support.design.widget.CollapsingToolbarLayout&gt;</pre> <blockquote>
+<p><code>app:layout_scrollFlags</code>的属性, scroll滑动, exitUntilCollapsed退出到最小, snap自动滑动动画, 定义CollapsingToolbarLayout的滑动属性.</p>
+</blockquote>
+<p>CollapsingToolbarLayout划分两部分, 一部分大图, 一部分文字.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">            &lt;ImageView  android:layout_width="match_parent" android:layout_height="300dp" android:scaleType="centerCrop" android:src="@drawable/large" app:layout_collapseMode="parallax" /&gt;
+
+            &lt;FrameLayout  android:layout_width="match_parent" android:layout_height="150dp" android:layout_gravity="bottom|center_horizontal" android:background="@color/colorPrimary" app:layout_collapseMode="parallax"&gt;
+
+                &lt;LinearLayout  android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_gravity="center"&gt;
+
+                    &lt;TextView  android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:gravity="bottom|center" android:text="@string/person_name" android:textColor="@android:color/white" android:textSize="30sp" /&gt;
+
+                    &lt;TextView  android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:layout_marginTop="4dp" android:text="@string/person_title" android:textColor="@android:color/white"/&gt;
+                &lt;/LinearLayout&gt;
+            &lt;/FrameLayout&gt;</pre> <blockquote>
+<p><code>app:layout_collapseMode="parallax"</code>折叠时的视差效果, 自动滑动.</p>
+</blockquote>
+<p href="http://static.open-open.com/lib/uploadImg/20160117/20160117170234_326.png">效果 <br />
+<img title="" alt="CollapsingToolbarLayout" src="http://static.open-open.com/lib/uploadImg/20160117/20160117170234_326.png" width="700" height="1166" /></p>
+<p>添加NestedScrollView, 文字的滚动视图.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    &lt;android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:behavior_overlapTop="30dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"&gt;
+
+        &lt;android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardElevation="8dp"
+            app:contentPadding="16dp"&gt;
+
+            &lt;TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8dp"
+                android:text="@string/person_intro"/&gt;
+
+        &lt;/android.support.v7.widget.CardView&gt;
+    &lt;/android.support.v4.widget.NestedScrollView&gt;</pre> <blockquote>
+<p><code>app:behavior_overlapTop="30dp"</code>, The amount that the scrolling view should overlap the bottom of any AppBarLayout. 使ScrollView压在AppBarLayout上面一段长度.</p>
+</blockquote>
+<p>添加ToolBar, 滚动结束的效果图.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    &lt;android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_anchor="@id/main_fl_title"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"&gt;
+
+        &lt;LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"&gt;
+
+            &lt;Space
+                android:layout_width="@dimen/image_final_width"
+                android:layout_height="@dimen/image_final_width" /&gt;
+
+            &lt;TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/person_name"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/&gt;
+
+        &lt;/LinearLayout&gt;
+
+    &lt;/android.support.v7.widget.Toolbar&gt;</pre> <blockquote>
+<p>ToolBar是工具栏, 滑动完成时, 在最上部显示. <code>Space</code>预留头像的位置.</p>
+</blockquote>
+<p>圆形头像CircleImageView显示(使用第三方库)</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    &lt;de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:src="@drawable/small"
+        app:border_color="@android:color/white"
+        app:border_width="2dp"
+        app:layout_behavior=".AvatarImageBehavior" /&gt;</pre> <blockquote>
+<p>头像控件的滑动行为是自定义的类, 具体行为参考注释. 判断起始和终止位置, child和dependency视图联动, 这里是图像视图和Toolbar联动.</p>
+</blockquote>
+<pre class="brush:java; toolbar: true; auto-links: false;">/** * 图片控件位置动画 * * @author wangchenlong */
+@SuppressWarnings("unused")
+public class AvatarImageBehavior extends CoordinatorLayout.Behavior&lt;CircleImageView&gt; {
+
+    private final static float MIN_AVATAR_PERCENTAGE_SIZE = 0.3f;
+    private final static int EXTRA_FINAL_AVATAR_PADDING = 80;
+
+    private int mStartYPosition; // 起始的Y轴位置
+    private int mFinalYPosition; // 结束的Y轴位置
+    private int mStartHeight; // 开始的图片高度
+    private int mFinalHeight; // 结束的图片高度
+    private int mStartXPosition; // 起始的X轴高度
+    private int mFinalXPosition; // 结束的X轴高度
+    private float mStartToolbarPosition; // Toolbar的起始位置
+
+    private final Context mContext;
+    private float mAvatarMaxSize;
+
+    public AvatarImageBehavior(Context context, AttributeSet attrs) {
+        mContext = context;
+        init();
+    }
+
+    private void init() {
+        bindDimensions();
+    }
+
+    private void bindDimensions() {
+        mAvatarMaxSize = mContext.getResources().getDimension(R.dimen.image_width);
+    }
+
+
+    @Override
+    public boolean layoutDependsOn(CoordinatorLayout parent, CircleImageView child, View dependency) {
+        // 依赖Toolbar控件
+        return dependency instanceof Toolbar;
+    }
+
+    @Override
+    public boolean onDependentViewChanged(CoordinatorLayout parent, CircleImageView child, View dependency) {
+
+        // 初始化属性
+        shouldInitProperties(child, dependency);
+
+        // 最大滑动距离: 起始位置-状态栏高度
+        final int maxScrollDistance = (int) (mStartToolbarPosition - getStatusBarHeight());
+
+        // 滑动的百分比
+        float expandedPercentageFactor = dependency.getY() / maxScrollDistance;
+
+        // Y轴距离
+        float distanceYToSubtract = ((mStartYPosition - mFinalYPosition)
+                * (1f - expandedPercentageFactor)) + (child.getHeight() / 2);
+
+        // X轴距离
+        float distanceXToSubtract = ((mStartXPosition - mFinalXPosition)
+                * (1f - expandedPercentageFactor)) + (child.getWidth() / 2);
+
+        // 高度减小
+        float heightToSubtract = ((mStartHeight - mFinalHeight) * (1f - expandedPercentageFactor));
+
+        // 图片位置
+        child.setY(mStartYPosition - distanceYToSubtract);
+        child.setX(mStartXPosition - distanceXToSubtract);
+
+        // 图片大小
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+        lp.width = (int) (mStartHeight - heightToSubtract);
+        lp.height = (int) (mStartHeight - heightToSubtract);
+        child.setLayoutParams(lp);
+
+        return true;
+    }
+
+    /** * 初始化动画值 * * @param child 图片控件 * @param dependency ToolBar */
+    private void shouldInitProperties(CircleImageView child, View dependency) {
+
+        // 图片控件中心
+        if (mStartYPosition == 0)
+            mStartYPosition = (int) (child.getY() + (child.getHeight() / 2));
+
+        // Toolbar中心
+        if (mFinalYPosition == 0)
+            mFinalYPosition = (dependency.getHeight() / 2);
+
+        // 图片高度
+        if (mStartHeight == 0)
+            mStartHeight = child.getHeight();
+
+        // Toolbar缩略图高度
+        if (mFinalHeight == 0)
+            mFinalHeight = mContext.getResources().getDimensionPixelOffset(R.dimen.image_final_width);
+
+        // 图片控件水平中心
+        if (mStartXPosition == 0)
+            mStartXPosition = (int) (child.getX() + (child.getWidth() / 2));
+
+        // 边缘+缩略图宽度的一半
+        if (mFinalXPosition == 0)
+            mFinalXPosition = mContext.getResources().getDimensionPixelOffset(R.dimen.abc_action_bar_content_inset_material) + (mFinalHeight / 2);
+
+        // Toolbar的起始位置
+        if (mStartToolbarPosition == 0)
+            mStartToolbarPosition = dependency.getY() + (dependency.getHeight() / 2);
+    }
+
+    // 获取状态栏高度
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = mContext.getResources().getIdentifier("status_bar_height", "dimen", "android");
+
+        if (resourceId &gt; 0) {
+            result = mContext.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+}</pre> <p>添加需要使用的id, <code>activity_main.xml</code>如下</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    tools:context=".MainActivity"&gt;
+
+    &lt;android.support.design.widget.AppBarLayout
+        android:id="@+id/main_abl_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"&gt;
+
+        &lt;android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"&gt;
+
+            &lt;ImageView
+                android:id="@+id/main_iv_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/large"
+                app:layout_collapseMode="parallax" /&gt;
+
+            &lt;FrameLayout
+                android:id="@+id/main_fl_title"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@color/colorPrimary"
+                app:layout_collapseMode="parallax"&gt;
+
+                &lt;LinearLayout
+                    android:id="@+id/main_ll_title_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"&gt;
+
+                    &lt;TextView
+                        android:layout_marginTop="@dimen/title_margin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="bottom|center"
+                        android:text="@string/person_name"
+                        android:textColor="@android:color/white"
+                        android:textSize="30sp"/&gt;
+
+                    &lt;TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/person_title"
+                        android:textColor="@android:color/white" /&gt;
+                &lt;/LinearLayout&gt;
+            &lt;/FrameLayout&gt;
+        &lt;/android.support.design.widget.CollapsingToolbarLayout&gt;
+    &lt;/android.support.design.widget.AppBarLayout&gt;
+
+    &lt;android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        app:behavior_overlapTop="30dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"&gt;
+
+        &lt;android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardElevation="8dp"
+            app:contentPadding="16dp"&gt;
+
+            &lt;TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8dp"
+                android:text="@string/person_intro" /&gt;
+
+        &lt;/android.support.v7.widget.CardView&gt;
+
+    &lt;/android.support.v4.widget.NestedScrollView&gt;
+
+    &lt;android.support.v7.widget.Toolbar
+        android:id="@+id/main_tb_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_anchor="@id/main_fl_title"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"&gt;
+
+        &lt;LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"&gt;
+
+            &lt;Space
+                android:layout_width="@dimen/image_final_width"
+                android:layout_height="@dimen/image_final_width" /&gt;
+
+            &lt;TextView
+                android:id="@+id/main_tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/person_name"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:visibility="invisible"/&gt;
+
+        &lt;/LinearLayout&gt;
+
+    &lt;/android.support.v7.widget.Toolbar&gt;
+
+    &lt;de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="@dimen/image_width"
+        android:layout_height="@dimen/image_width"
+        android:layout_gravity="center"
+        android:src="@drawable/small"
+        app:border_color="@android:color/white"
+        app:border_width="2dp"
+        app:layout_behavior=".AvatarImageBehavior" /&gt;
+
+&lt;/android.support.design.widget.CoordinatorLayout&gt;</pre> <p href="http://static.open-open.com/lib/uploadImg/20160117/20160117170235_412.png">效果 <br />
+<img title="" alt="页面" src="http://static.open-open.com/lib/uploadImg/20160117/20160117170235_412.png" width="700" height="1166" /></p>
+<h3 id="3-逻辑">3. 逻辑</h3>
+<p>在onCreate里面设置滑动逻辑, 设置两个动画: 监听AppBar的滑动, 处理Toolbar和Title的显示; 自动滑动效果.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        mTbToolbar.setTitle("");
+
+        // AppBar的监听
+        mAblAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int maxScroll = appBarLayout.getTotalScrollRange();
+                float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+                handleAlphaOnTitle(percentage);
+                handleToolbarTitleVisibility(percentage);
+            }
+        });
+
+        initParallaxValues(); // 自动滑动效果
+    }</pre> <p>根据滑动百分比, 设置Title和Toolbar的显示与消失, 使用Alpha动画.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    // 处理ToolBar的显示
+    private void handleToolbarTitleVisibility(float percentage) {
+        if (percentage &gt;= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+            if (!mIsTheTitleVisible) {
+                startAlphaAnimation(mTvToolbarTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleVisible = true;
+            }
+        } else {
+            if (mIsTheTitleVisible) {
+                startAlphaAnimation(mTvToolbarTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleVisible = false;
+            }
+        }
+    }
+
+    // 控制Title的显示
+    private void handleAlphaOnTitle(float percentage) {
+        if (percentage &gt;= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
+            if (mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mLlTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleContainerVisible = false;
+            }
+        } else {
+            if (!mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mLlTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleContainerVisible = true;
+            }
+        }
+    }
+
+    // 设置渐变的动画
+    public static void startAlphaAnimation(View v, long duration, int visibility) {
+        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
+                ? new AlphaAnimation(0f, 1f)
+                : new AlphaAnimation(1f, 0f);
+
+        alphaAnimation.setDuration(duration);
+        alphaAnimation.setFillAfter(true);
+        v.startAnimation(alphaAnimation);
+    }</pre> <p>自动滑动动画, 当到一定比例时展开或关闭.</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">    // 设置自动滑动的动画效果
+    private void initParallaxValues() {
+        CollapsingToolbarLayout.LayoutParams petDetailsLp =
+                (CollapsingToolbarLayout.LayoutParams) mIvPlaceholder.getLayoutParams();
+
+        CollapsingToolbarLayout.LayoutParams petBackgroundLp =
+                (CollapsingToolbarLayout.LayoutParams) mFlTitleContainer.getLayoutParams();
+
+        petDetailsLp.setParallaxMultiplier(0.9f);
+        petBackgroundLp.setParallaxMultiplier(0.3f);
+
+        mIvPlaceholder.setLayoutParams(petDetailsLp);
+        mFlTitleContainer.setLayoutParams(petBackgroundLp);
+    }</pre> <p>最终逻辑</p>
+<pre class="brush:java; toolbar: true; auto-links: false;">public class MainActivity extends AppCompatActivity {
+
+    // 控制ToolBar的变量
+    private static final float PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR = 0.9f;
+    private static final float PERCENTAGE_TO_HIDE_TITLE_DETAILS = 0.3f;
+
+    private static final int ALPHA_ANIMATIONS_DURATION = 200;
+
+    private boolean mIsTheTitleVisible = false;
+    private boolean mIsTheTitleContainerVisible = true;
+
+    @Bind(R.id.main_iv_placeholder)
+    ImageView mIvPlaceholder; // 大图片
+
+    @Bind(R.id.main_ll_title_container)
+    LinearLayout mLlTitleContainer; // Title的LinearLayout
+
+    @Bind(R.id.main_fl_title)
+    FrameLayout mFlTitleContainer; // Title的FrameLayout
+
+    @Bind(R.id.main_abl_app_bar)
+    AppBarLayout mAblAppBar; // 整个可以滑动的AppBar
+
+    @Bind(R.id.main_tv_toolbar_title)
+    TextView mTvToolbarTitle; // 标题栏Title
+
+    @Bind(R.id.main_tb_toolbar)
+    Toolbar mTbToolbar; // 工具栏
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        mTbToolbar.setTitle("");
+
+        // AppBar的监听
+        mAblAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int maxScroll = appBarLayout.getTotalScrollRange();
+                float percentage = (float) Math.abs(verticalOffset) / (float) maxScroll;
+                handleAlphaOnTitle(percentage);
+                handleToolbarTitleVisibility(percentage);
+            }
+        });
+
+        initParallaxValues(); // 自动滑动效果
+    }
+
+    // 设置自动滑动的动画效果
+    private void initParallaxValues() {
+        CollapsingToolbarLayout.LayoutParams petDetailsLp =
+                (CollapsingToolbarLayout.LayoutParams) mIvPlaceholder.getLayoutParams();
+
+        CollapsingToolbarLayout.LayoutParams petBackgroundLp =
+                (CollapsingToolbarLayout.LayoutParams) mFlTitleContainer.getLayoutParams();
+
+        petDetailsLp.setParallaxMultiplier(0.9f);
+        petBackgroundLp.setParallaxMultiplier(0.3f);
+
+        mIvPlaceholder.setLayoutParams(petDetailsLp);
+        mFlTitleContainer.setLayoutParams(petBackgroundLp);
+    }
+
+    // 处理ToolBar的显示
+    private void handleToolbarTitleVisibility(float percentage) {
+        if (percentage &gt;= PERCENTAGE_TO_SHOW_TITLE_AT_TOOLBAR) {
+            if (!mIsTheTitleVisible) {
+                startAlphaAnimation(mTvToolbarTitle, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleVisible = true;
+            }
+        } else {
+            if (mIsTheTitleVisible) {
+                startAlphaAnimation(mTvToolbarTitle, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleVisible = false;
+            }
+        }
+    }
+
+    // 控制Title的显示
+    private void handleAlphaOnTitle(float percentage) {
+        if (percentage &gt;= PERCENTAGE_TO_HIDE_TITLE_DETAILS) {
+            if (mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mLlTitleContainer, ALPHA_ANIMATIONS_DURATION, View.INVISIBLE);
+                mIsTheTitleContainerVisible = false;
+            }
+        } else {
+            if (!mIsTheTitleContainerVisible) {
+                startAlphaAnimation(mLlTitleContainer, ALPHA_ANIMATIONS_DURATION, View.VISIBLE);
+                mIsTheTitleContainerVisible = true;
+            }
+        }
+    }
+
+    // 设置渐变的动画
+    public static void startAlphaAnimation(View v, long duration, int visibility) {
+        AlphaAnimation alphaAnimation = (visibility == View.VISIBLE)
+                ? new AlphaAnimation(0f, 1f)
+                : new AlphaAnimation(1f, 0f);
+
+        alphaAnimation.setDuration(duration);
+        alphaAnimation.setFillAfter(true);
+        v.startAnimation(alphaAnimation);
+    }
+}</pre> <p><a href="https://github.com/SpikeKing/TestCoordinatorLayout.git">Github下载地址</a></p>
+<p>这样联动效果就已经显示出来了, 在AppBar中Toolbar和Title之间的关系, 符合Material的风格, 给用户更多的体验. 既然已经集成到HelloWorld中, 说明Android是极力推荐使用CoordinatorLayout这种风格的, 那我们就Enjoy it吧.</p>
+</div>
+<script type="text/javascript">
+            $(function () {
+                $('pre.prettyprint code').each(function () {
+                    var lines = $(this).text().split('\n').length;
+                    var $numbering = $('<ul />
+').addClass('pre-numbering').hide();
+                    $(this).addClass('has-numbering').parent().append($numbering);
+                    for (i = 1; i <= lines; i++) {
+                        $numbering.append($('<li />
+').text(i));
+                    };
+                    $numbering.fadeIn(1700);
+                });
+            });
+        </script>
+<p>来自： <a href="http://blog.csdn.net//caroline_wendy/article/details/49721615" rel="nofollow" target="_blank">http://blog.csdn.net//caroline_wendy/article/details/49721615</a></p>
+				</article>
+
+
+
+
+		
+
+
+
+		</div>
+
+
+
+	<div  class="col-md-3">
+		<div class="bdsharebuttonbox">
+			<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+			<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+			<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+			<a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+			<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+
+		</div>
+
+		<div class=" side-box" style="margin-top: 20px;">
+				<div class="title"><h3>同类热门经验</h3></div>
+				<ol class="hot">
+					
+						<li>
+							<a title=上百个Android开源项目分享 href="/lib/view/open1328063267889.html"><span class=title>上百个Android开源项目分享</span></a>
+						</li>
+					
+						<li>
+							<a title=android json解析及简单例子 href="/lib/view/open1326376799874.html"><span class=title>android json解析及简单例子</span></a>
+						</li>
+					
+						<li>
+							<a title=Android 软件自动更新功能的实现 href="/lib/view/open1322529319718.html"><span class=title>Android 软件自动更新功能的实现</span></a>
+						</li>
+					
+						<li>
+							<a title=自定义 Android 对话框 (AlertDialog) 的样式 href="/lib/view/open1325635738437.html"><span class=title>自定义 Android 对话框 (AlertDialog) 的样式</span></a>
+						</li>
+					
+						<li>
+							<a title=adb shell 命令详解 href="/lib/view/open1327557366686.html"><span class=title>adb shell 命令详解</span></a>
+						</li>
+					
+						<li>
+							<a title=android定位和地图开发实例  href="/lib/view/open1328756009421.html"><span class=title>android定位和地图开发实例 </span></a>
+						</li>
+					
+
+				</ol>
+			</div>
+		<p class="aiBar"></p>
+		<div class=" side-box post-nav" style="margin-top: 20px;">
+			<div class="title"><h3>阅读目录</h3></div>
+			<ul class="articleIndex"></ul>
+		</div>
+	</div>
+
+
+
+</div>
+	</div>
+
+<div class="container">
+<script type="text/javascript">
+    var cpro_id = "u2690846";
+</script>
+<script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script>
+
+	<div class="row">
+		<div class="col-md-9">
+			<table width='100%'><tr>
+				<td valign='top' width="33%" class="Relatedb">
+					<div style="border-bottom: 1px #ccc solid;margin-top: 5px"><strong>相关文档</strong> 　—　<a href="http://www.open-open.com/doc" rel="nofollow" target="_blank">更多</a></div>
+					<ul >
+						
+							<li><a  href="http://www.open-open.com/doc/view/134473b0d55641f3a8481104f8588bc4" rel="nofollow" target="_blank" title="BSP 分割算法简述.doc">BSP 分割算法简述.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/dbb0a52ee0914aaf843f4029eb17f04c" rel="nofollow" target="_blank" title="Hadoop集群安装步骤简述.doc">Hadoop集群安装步骤简述.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/bd638432c16641b7a6499c6bd1d01b54" rel="nofollow" target="_blank" title="http 协议与缓存简述.ppt">http 协议与缓存简述.ppt</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/2e3cbdea9cd94f0a85c501357bd2dd37" rel="nofollow" target="_blank" title="http协议与缓存简述.ppt">http协议与缓存简述.ppt</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/cd14c8aeeefd4fe39e46fcae22aec03a" rel="nofollow" target="_blank" title="SAP R/3 功能简述.doc">SAP R/3 功能简述.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/64b3e793513a4e54851d5d6ec846eddc" rel="nofollow" target="_blank" title="简述Android触摸屏手势识别.doc">简述Android触摸屏手势识别.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/ccd863b0804f46fcbb66b498974b88ff" rel="nofollow" target="_blank" title="简述STRUTS2 Convention零配置.doc">简述STRUTS2 Convention零配置.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/6f2dbd090fb3428cb50ba00606980c66" rel="nofollow" target="_blank" title="oracle函数介绍(5) 分析函数简述.doc">oracle函数介绍(5) 分析函数简述.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/c5397a836a5c4320a1a070f8b990a627" rel="nofollow" target="_blank" title="拥抱 HTML5.ppt">拥抱 HTML5.ppt</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/2c2c5cbac67d49dea6896f094056ffcd" rel="nofollow" target="_blank" title="深入剖析Activity组件.pptx">深入剖析Activity组件.pptx</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/b6aacb86253e43c38b205a287a8fa18f" rel="nofollow" target="_blank" title="网络存储与云计算及应用.pdf">网络存储与云计算及应用.pdf</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/d7628081158848dea1f2d5fb5f18348f" rel="nofollow" target="_blank" title="03-信息系统集成...pdf">03-信息系统集成...pdf</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/5cbb96e301a7407a9ff4fe6b670b1a3d" rel="nofollow" target="_blank" title="百度中文分词技术浅析.pdf">百度中文分词技术浅析.pdf</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/611cbfa98058496e820bb300ce9111f2" rel="nofollow" target="_blank" title="2016年中国im云服务行业白皮书.pdf">2016年中国im云服务行业白皮书.pdf</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/93fbce3cb70f4ea98a8f4743a67291e3" rel="nofollow" target="_blank" title="ucos-ii在stm32上的移植.ppt">ucos-ii在stm32上的移植.ppt</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/3a15b06a155441549e83fbc17543e7f1" rel="nofollow" target="_blank" title="20080801项目管理规范附件一（项目需求报告格式）.doc">20080801项目管理规范附件一（项目需求报告格式）.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/11a932e5b55c41b687ba5f64f1d4416a" rel="nofollow" target="_blank" title="第6章-Criteria查询及命名查询.pptx">第6章-Criteria查询及命名查询.pptx</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/cd8192bd4c42443f853cf38dfd5d5db7" rel="nofollow" target="_blank" title="软件测试技术基础课后习题答案.doc">软件测试技术基础课后习题答案.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/0df63ea1103d4a33a4ad1ffa4301d9b3" rel="nofollow" target="_blank" title="VC++串口通讯实例.doc">VC++串口通讯实例.doc</a></li>
+						
+							<li><a  href="http://www.open-open.com/doc/view/741e0b39c5604e54ba02993e9d6e1ecd" rel="nofollow" target="_blank" title="最全的ASP.NET面试题.docx">最全的ASP.NET面试题.docx</a></li>
+						
+					</ul>
+				</td>
+				<td valign='top' width="33%" class="Relatedb">
+					<div style="border-bottom: 1px #ccc solid;margin-top: 5px"><strong>相关经验</strong> 　—　<a href="http://www.open-open.com/lib" rel="nofollow" target="_blank">更多</a></div>
+					<ul >
+						
+							<li >
+								<a title=Android5.0+(CoordinatorLayout) href="/lib/view/open1438265820831.html" target=_blank><span
+										class=title>Android5.0+(CoordinatorLayout)</span></a>
+
+							</li>
+						
+							<li >
+								<a title=CoordinatorLayout与滚动的处理 href="/lib/view/open1437312265428.html" target=_blank><span
+										class=title>CoordinatorLayout与滚动的处理</span></a>
+
+							</li>
+						
+							<li >
+								<a title=SwipeRefreshLayout 与 CoordinatorLayout 嵌套刷新  href="/lib/view/open1454333294198.html" target=_blank><span
+										class=title>SwipeRefreshLayout 与 CoordinatorLayout 嵌套刷新 </span></a>
+
+							</li>
+						
+							<li >
+								<a title=Android 优化交互 —— CoordinatorLayout 与 Behavior href="/lib/view/open1461854130637.html" target=_blank><span
+										class=title>Android 优化交互 —— CoordinatorLayout 与 Behavior</span></a>
+
+							</li>
+						
+							<li >
+								<a title=CoordinatorLayout Behaviors使用说明[翻译] href="/lib/view/open1456121469870.html" target=_blank><span
+										class=title>CoordinatorLayout Behaviors使用说明[翻译]</span></a>
+
+							</li>
+						
+							<li >
+								<a title=拦截一切的CoordinatorLayout Behavior  href="/lib/view/open1456567120156.html" target=_blank><span
+										class=title>拦截一切的CoordinatorLayout Behavior </span></a>
+
+							</li>
+						
+							<li >
+								<a title=Android学习系列Toolbar，AppBarLayout，CoordinatorLayout，CollapsingToolbarLayout使用小结 href="/lib/view/open1465722099088.html" target=_blank><span
+										class=title>Android学习系列Toolbar，AppBarLayout，CoordinatorLayout，CollapsingToolbarLayout使用小结</span></a>
+
+							</li>
+						
+							<li >
+								<a title=Material Design学习之 Bottom Sheets (顺便提提CoordinatorLayout) href="/lib/view/open1457672849390.html" target=_blank><span
+										class=title>Material Design学习之 Bottom Sheets (顺便提提CoordinatorLayout)</span></a>
+
+							</li>
+						
+							<li >
+								<a title=simple-view-behavior - 简便的方式来处理CoordinatorLayout Behavior href="/lib/view/open1451873185386.html" target=_blank><span
+										class=title>simple-view-behavior - 简便的方式来处理CoordinatorLayout Behavior</span></a>
+
+							</li>
+						
+							<li >
+								<a title=简述 OAuth 2.0 的运作流程 href="/lib/view/open1452474155933.html" target=_blank><span
+										class=title>简述 OAuth 2.0 的运作流程</span></a>
+
+							</li>
+						
+							<li >
+								<a title=RxAndroid简述 href="/lib/view/open1453021362339.html" target=_blank><span
+										class=title>RxAndroid简述</span></a>
+
+							</li>
+						
+							<li >
+								<a title=ActiveMQ简述 href="/lib/view/open1463124225271.html" target=_blank><span
+										class=title>ActiveMQ简述</span></a>
+
+							</li>
+						
+							<li >
+								<a title=探寻微博背后的大数据原理：微博推荐算法简述 href="/lib/view/open1407300227223.html" target=_blank><span
+										class=title>探寻微博背后的大数据原理：微博推荐算法简述</span></a>
+
+							</li>
+						
+							<li >
+								<a title=Paxos算法简述 href="/lib/view/open1347954648615.html" target=_blank><span
+										class=title>Paxos算法简述</span></a>
+
+							</li>
+						
+					</ul>
+				</td>
+				<td valign='top' width="33%" class="Relatedb">
+					<div style="border-bottom: 1px #ccc solid;margin-top: 5px"><strong>相关讨论</strong> 　—　<a href="http://www.open-open.com/solution" rel="nofollow" target="_blank">更多</a></div>
+					<ul >
+						
+							<li >
+								<a title=一个失败软件项目的思考 href="http://www.open-open.com/solution/view/1326293142062" rel="nofollow" target=_blank><span class=title>一个失败软件项目的思考</span></a>
+							</li>
+						
+					</ul>
+				</td>
+			</tr></table>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+
+
+<style>
+	footer{background-color: #fff;
+		border-top: 1px solid rgba(230, 230, 230, 0.75);
+		margin-top: 20px;
+		padding: 20px 0;}
+</style>
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-4 col-xs-4" style="line-height: 60px;">
+				<span>&copy;2006-2016 深度开源 </span>
+			</div>
+			<div class="col-md-4 col-xs-4 text-center"><span>
+				<a rel="nofollow" href="http://www.open-open.com/" class="brightbox-logo"><img src="http://www.open-open.com/resource/logo-icon.png"  ></a>
+			</span></div>
+			<div class="col-md-4 col-xs-4"  style="line-height: 60px;">
+				 <a target="_blank" href="http://www.miibeian.gov.cn/">浙ICP备09019653号-31</a>
+				<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257892335'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1257892335' type='text/javascript'%3E%3C/script%3E"));</script>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<script src="//cdn.bootcss.com/jquery/1.12.1/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/js/jquery-confirm.js"></script>
+<script type="text/javascript" src="/lib/js/app.js?1603300956"></script>
+<script type="text/javascript" src="/lib/js/scrolltopcontrol.js"></script>
+<!-- the jScrollPane script -->
+<script type="text/javascript" src="/lib/js/jquery.contentcarousel.js"></script>
+
+<script type="text/javascript">
+	var rooturl="/lib";
+	var tb_pathToImage = "/lib/images/loadingAnimation.gif";
+	var jc = {};
+	$(function (){
+		$('#ca-container').contentcarousel();
+		$('.login').on('click', function () {
+			jc = $.dialog({
+				title: '&nbsp;',
+				content: '<iframe id="dialog" scrolling="no" style="width:100%;border:none;height:300px;" src="/lib/members/login?keepThis=true&TB_iframe=true&height=177&width=280"></iframe>',
+				animation: 'top',
+				columnClass: 'col-md-5 col-md-offset-3',
+				closeAnimation: 'top',
+				backgroundDismiss: true
+			});
+		});
+		$('.register').on('click', function () {
+			jc = $.dialog({
+				title: '&nbsp;',
+				content: '<iframe id="dialog" scrolling="no" style="width:100%;border:none;height:460px;" src="/lib/members/register?keepThis=true&TB_iframe=true&height=460&width=460"></iframe>',
+				animation: 'top',
+				columnClass: 'col-md-6 col-md-offset-3',
+				closeAnimation: 'top',
+				backgroundDismiss: true
+			});
+		});
+
+
+	});
+
+
+</script>
+
+<script src="//cdn.bootcss.com/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/lib/js/scrolltopcontrol.js"></script>
+<script type="text/javascript" src="/lib/js/view.js?1603300911"></script>
+
+<script type="text/javascript" src="/lib/js/jquery.jgrowl_minimized.js"></script>
+
+<script type="text/javascript">
+	scrolltotop.offset(95,165);
+	scrolltotop.init();
+</script>
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();
+
+	(function(){
+		var c = new contentIndex();
+		c("article", ".articleIndex");
+		setAIActive();
+
+
+		$(window).scroll(function () {
+			if ($(window).scrollTop() > $(".aiBar").offset().top) {
+				$(".post-nav").addClass("aside-fixed");
+//          console.log($(window).scrollTop());
+			} else {
+//           console.log($(window).scrollTop());
+				$(".post-nav").removeClass("aside-fixed");
+			}
+		});
+		$("#readercontainer img").each(function(index, element) {
+			var $width=$("#readercontainer article").width();
+			if ( this.width>$width) {
+
+				this.height = this.height*$width/this.width;
+				this.width=$width;
+			}
+		});
+
+	})();
+</script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<script>
+	(function(){
+		var bp = document.createElement('script');
+		bp.src = '//push.zhanzhang.baidu.com/push.js';
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+</script>
+
+</body>
+</html>
