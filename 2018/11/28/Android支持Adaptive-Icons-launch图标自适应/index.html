@@ -16,10 +16,9 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1353074-31f105f920d4eb00.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1353074-364fa9af4dacecdf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1353074-b6a8429afb6130e7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1353074-c999c682dea000c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/1353074-2789982bc072627d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-11-28T06:54:09.291Z">
+<meta property="og:updated_time" content="2018-11-28T06:59:38.425Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android支持Adaptive Icons-launch图标自适应">
 <meta name="twitter:description" content="一，现象：一些ROM会为应用图标套上统一的外壳，有可能导致没有适配的图标显得很小。二，办法参考：背景和前景分开，按照https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive 说明添加资源即可。https://source.android.google.cn/devices/tech/displa">
@@ -98,7 +97,6 @@
       
         <p>一，现象：一些ROM会为应用图标套上统一的外壳，有可能导致没有适配的图标显得很小。<br><img src="https://upload-images.jianshu.io/upload_images/1353074-31f105f920d4eb00.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"><br>二，办法参考：背景和前景分开，按照<a href="https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive" target="_blank" rel="noopener">https://developer.android.com/guide/practices/ui_guidelines/icon_design_adaptive</a> 说明添加资源即可。<br><a href="https://source.android.google.cn/devices/tech/display/adaptive-icons" target="_blank" rel="noopener">https://source.android.google.cn/devices/tech/display/adaptive-icons</a><br>相关资源在住这儿设计资源共享夹⁩ ▸ ⁨Icon 图标⁩ ▸ ⁨Android优化⁩ ▸ ⁨Adaptive Icons⁩</p>
 <p>三，具体操作步骤：<br>1，导出一张名为ic_foreground.png的logo图标，不需要背景色，单纯logo。根据图片分辨率的不同放到不同倍率的文件夹中，我这里使用的是四倍图，放入到mipmap-xxxhdpi文件夹中。<br>2，导出一张名为ic_background.png的背景图片（如果背景为纯色可以不用）。<br>3，在Android studio 中找到drawable文件夹，右键<br><img src="https://upload-images.jianshu.io/upload_images/1353074-364fa9af4dacecdf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/1353074-b6a8429afb6130e7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>从Foreground Layer选项卡中的path中选中你的ic_foreground.png的路径，同样Background Layer选项卡中设置纯色背景或者设置ic_background.png路径。点击next会自动在每种分辨率的文件夹中生成：ic_launcher.png,ic_launcher_foreground.png,ic_launch_round.png。<br>还会自动生成一个mipmap-anydpi-v26的文件夹，其中包含ic_launch.xml和ic_launch_round.xml。具体如下图<br><img src="https://upload-images.jianshu.io/upload_images/1353074-c999c682dea000c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
 <p>之后再AndroidManifest.xml文件中的Application元素中添加属性android:icon=”@mipmap/ic_launcher”<br>        android:roundIcon=”@mipmap/ic_launcher”。这样就完成了，最后效果如下图：每家不同的系统园或者方会有所差别属于正常。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1353074-2789982bc072627d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
@@ -106,7 +104,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://huyongqiang.github.io/2018/11/28/Android支持Adaptive-Icons-launch图标自适应/" data-id="cjp0teqo10001esoxoxn8cxbc" class="article-share-link">Share</a>
+      <a data-url="https://huyongqiang.github.io/2018/11/28/Android支持Adaptive-Icons-launch图标自适应/" data-id="cjp0tlgsu000083ox2pfm39dt" class="article-share-link">Share</a>
       
       
     </footer>
